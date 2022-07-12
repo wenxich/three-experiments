@@ -1,6 +1,11 @@
 import './style.css'
 
-document.querySelector('#app').innerHTML = `
-  <h1>Hello</h1>
-  <a href="https://vitejs.dev/guide/features.html" target="_blank">Documentation</a>
-`
+import * as THREE from 'three';
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(75, innerWidth/innerHeight, 0.1, 1000); //field of view (degrees), aspect ratio (fraction) + 2 clipping planes
+const renderer = new THREE.WebGLRenderer();
+
+console.log(scene);
+console.log(camera);
+console.log(renderer);
