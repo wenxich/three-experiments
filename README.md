@@ -1,6 +1,6 @@
 # Three.js Experiments
 
-I experimented with Three.js to become more familiar with the library.
+I created 3D object visualizations in Three.js to become more familiar with the library.
 
 ## Projects:
 - **Plane:** users can adjust the width and height of the plane object. Users can also use their mouse to rotate the object.
