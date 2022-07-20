@@ -90,7 +90,7 @@ renderer.render(scene, camera);
 
 //add an animation
 
-//create recursive function to keep updating the animation (???????????????)
+//create recursive function to keep updating the animation
 function animate() {
     requestAnimationFrame(animate);
     renderer.render(scene, camera);
