@@ -80,13 +80,33 @@ scene.add(boxMesh);
 
 //parameters: color, intensity
 const frontLight = new THREE.DirectionalLight(0xffffff, 1.0);
-frontLight.position.set(1, 1, 1);
+frontLight.position.set(0, 0, 1);
 scene.add( frontLight );
 
 //parameters: color, intensity
 const backLight = new THREE.DirectionalLight(0xffffff, 1.0);
-backLight.position.set(-1, -1, -1);
+backLight.position.set(0, 0, -1);
 scene.add( backLight );
+
+//parameters: color, intensity
+const rightLight = new THREE.DirectionalLight(0xffffff, 1.0);
+rightLight.position.set(1, 0, 0);
+scene.add( rightLight );
+
+//parameters: color, intensity
+const leftLight = new THREE.DirectionalLight(0xffffff, 1.0);
+leftLight.position.set(-1, 0, 0);
+scene.add( leftLight );
+
+//parameters: color, intensity
+const upLight = new THREE.DirectionalLight(0xffffff, 1.0);
+upLight.position.set(0, 1, 0);
+scene.add( upLight );
+
+//parameters: color, intensity
+const downLight = new THREE.DirectionalLight(0xffffff, 1.0);
+downLight.position.set(0, -1, 0);
+scene.add( downLight );
 
 //renders it all
 renderer.render(scene, camera);
