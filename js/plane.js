@@ -1,7 +1,9 @@
-import './style.css'
+import '../style.css'
 
 import * as THREE from 'three';
 import * as dat from 'dat.gui';
+
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 
 //DAT.GUI SLIDERS
 
@@ -10,9 +12,7 @@ const gui = new dat.GUI();
 const world = {
     plane: {
         width: 10,
-        height: 10,
-        widthSegments: 10,
-        heightSegments: 10
+        height: 10
     }
 }
 
@@ -22,31 +22,14 @@ gui.add(world.plane, 'width', 1, 20).onChange(generatePlane);
 //dat.gui - HEIGHT
 gui.add(world.plane, 'height', 1, 20).onChange(generatePlane);
 
-//dat.gui - WIDTH
-gui.add(world.plane, 'widthSegments', 1, 20).onChange(generatePlane);
-
-//dat.gui - HEIGHT
-gui.add(world.plane, 'heightSegments', 1, 20).onChange(generatePlane);
-
 function generatePlane() {
     planeMesh.geometry.dispose();
     planeMesh.geometry = new THREE.PlaneGeometry(
         world.plane.width,
         world.plane.height,
-        world.plane.widthSegments,
-        world.plane.heightSegments
+        1,
+        1
     );
-
-    const {array} = planeMesh.geometry.attributes.position;
-
-    for (let i = 0; i < array.length; i+=3) {
-        const x = array[i];
-        const y = array[i + 1];
-        const z = array[i + 2];
-
-        //randomizing z position to add depth/jaggedness to plane
-        array[i + 2] = z + Math.random();
-    }
 }
 
 //THREE.JS SCENE
@@ -61,6 +44,9 @@ renderer.setSize(innerWidth, innerHeight);
 renderer.setPixelRatio(devicePixelRatio);
 
 document.body.appendChild(renderer.domElement); //insert this into body
+
+//create new OrbitControls object
+new OrbitControls(camera, renderer.domElement);
 
 //makes what's in front of the black screen visible
 camera.position.z = 5;
@@ -77,9 +63,10 @@ const planeMaterial = new THREE.MeshPhongMaterial(
         //colors: https://libxlsxwriter.github.io/working_with_colors.html
         color:0x800000,
 
+        //make back visible
         side: THREE.DoubleSide,
 
-        //make vertices visible
+        //make vertices making the plane visible
         flatShading: THREE.FlatShading
     });
 
@@ -88,23 +75,15 @@ const planeMesh = new THREE.Mesh(planeGeometry, planeMaterial);
 
 scene.add(planeMesh);
 
-console.log(planeMesh.geometry.attributes.position);
-
-const {array} = planeMesh.geometry.attributes.position;
-
-for (let i = 0; i < array.length; i+=3) {
-    const x = array[i];
-    const y = array[i + 1];
-    const z = array[i + 2];
-
-    //randomizing z position to add depth/jaggedness to plane
-    array[i + 2] = z + Math.random();
-}
+//parameters: color, intensity
+const frontLight = new THREE.DirectionalLight(0xffffff, 1.0);
+frontLight.position.set(0, 0, 1);
+scene.add( frontLight );
 
 //parameters: color, intensity
-const light = new THREE.DirectionalLight(0xffffff, 1.0);
-light.position.set(0, 0, 1);
-scene.add( light );
+const backLight = new THREE.DirectionalLight(0xffffff, 1.0);
+backLight.position.set(0, 0, -1);
+scene.add( backLight );
 
 //renders it all
 renderer.render(scene, camera);
@@ -115,7 +94,7 @@ renderer.render(scene, camera);
 function animate() {
     requestAnimationFrame(animate);
     renderer.render(scene, camera);
-    planeMesh.rotation.x += 0.01;
+    //planeMesh.rotation.x += 0.01;
 }
 
 //call the recursive function
